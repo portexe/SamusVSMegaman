@@ -1,0 +1,37 @@
+.user,
+.opponent {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  padding: 25px;
+  box-sizing: border-box;
+}
+.hud {
+  gap: 25px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.hudChild {
+  flex: 1;
+  height: 200px;
+}
+
+.summary {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.opponent .summary {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.characters {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+}

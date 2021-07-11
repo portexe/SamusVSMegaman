@@ -1,0 +1,14 @@
+.main {
+  padding: 25px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  border-radius: 10px;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.message {
+  font-size: 32px;
+}

@@ -1,0 +1,23 @@
+.main {
+  width: 500px;
+  height: 150px;
+  border-radius: 10px;
+  background-color: gray;
+
+  padding: 25px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.name,
+.level {
+  font-size: 32px;
+}

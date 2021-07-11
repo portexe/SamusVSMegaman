@@ -1,0 +1,28 @@
+.main {
+  padding: 25px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  border-radius: 10px;
+  height: 100%;
+
+  gap: 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+}
+.option {
+  display: flex;
+  border-radius: 5px;
+  border: 1px solid black;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 24px;
+
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: yellow;
+}

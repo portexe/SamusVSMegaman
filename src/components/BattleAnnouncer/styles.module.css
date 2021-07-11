@@ -5,6 +5,10 @@
   border-radius: 10px;
   height: 100%;
 
+  background-color: #1953cb;
+
+  color: white;
+
   display: flex;
   align-items: center;
   justify-content: center;

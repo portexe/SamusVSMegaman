@@ -6,44 +6,48 @@ import { BattleMenu, PlayerSummary, BattleAnnouncer } from 'components';
 export const App = () => {
   const playerStats = {
     level: 42,
-    name: 'PortEXE',
+    name: 'Mega Man',
     maxHealth: 177,
   };
 
-  const { maxHealth, level, name } = playerStats;
+  const { name, level, maxHealth } = playerStats;
 
   const [health, setHealth] = useState(maxHealth);
 
+  // Input: attacker and the receiver
+  // Output: new attacker and new receiver
+  const attack = ({ attacker, receiver }) => {};
+
+  // Input: receiver
+  // Output: new receiver
+  const heal = ({ receiver }) => {};
+
   return (
-    <div
-      style={{
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
+    <div className={styles.main}>
       <div className={styles.opponent}>
         <div className={styles.summary}>
           <PlayerSummary
-            health={12}
-            name={'Evil Person'}
             level={44}
+            health={12}
+            main={false}
+            name={'Evil Person'}
             maxHealth={maxHealth}
           />
         </div>
       </div>
 
       <div className={styles.characters}>
-        <img alt="megaman" src="/assets/megaman.png" />
-        <img alt="samus" src="/assets/samus.png" />
+        <div className={styles.gameHeader}>Mega Man vs Samus</div>
+        <div className={styles.gameImages}>
+          <img alt="megaman" src="/assets/megaman.png" />
+          <img alt="samus" src="/assets/samus.png" />
+        </div>
       </div>
 
       <div className={styles.user}>
         <div className={styles.summary}>
           <PlayerSummary
+            main={true}
             health={98}
             name={name}
             level={level}

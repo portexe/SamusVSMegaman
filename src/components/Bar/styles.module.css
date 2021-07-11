@@ -15,6 +15,7 @@
   align-items: center;
   justify-content: center;
   flex-basis: 50px;
+  color: black;
 }
 
 .max {
@@ -27,7 +28,7 @@
 }
 .value {
   height: 100%;
-  background-color: blue;
+  background-color: #0566fa;
 
   transition: 0.35s;
 }

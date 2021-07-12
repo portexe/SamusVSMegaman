@@ -1,25 +1,57 @@
-import styles from './styles.module.css';
-
 import { useState } from 'react';
+import styles from './styles.module.css';
 import { BattleMenu, PlayerSummary, BattleAnnouncer } from 'components';
 
 export const App = () => {
-  const playerStats = {
-    level: 42,
-    name: 'Mega Man',
+  const player = {
+    level: 44,
     maxHealth: 177,
+    name: 'Mega Man',
+    img: '/assets/megaman.png',
+
+    magic: 32,
+    attack: 44,
+    defense: 48,
+    magicDefense: 37,
+  };
+  const opponent = {
+    level: 42,
+    name: 'Samus',
+    maxHealth: 188,
+    img: '/assets/samus.png',
+
+    magic: 55,
+    attack: 48,
+    defense: 22,
+    magicDefense: 30,
   };
 
-  const { name, level, maxHealth } = playerStats;
+  const [health, setHealth] = useState(player.maxHealth);
+  const [opponentHealth, setOpponentHealth] = useState(opponent.maxHealth);
 
-  const [health, setHealth] = useState(maxHealth);
+  // 0 -> Player's turn
+  // 1 -> Opponent's turn
+  // -1 -> Animating
+  const [turn, setTurn] = useState(0);
+
+  const [announcerMessage, setAnnouncerMessage] = useState(
+    'What will Mega Man do?',
+  );
 
   // Input: attacker and the receiver
-  // Output: new attacker and new receiver
-  const attack = ({ attacker, receiver }) => {};
+  // Output: damage dealt
+  const attack = ({ attacker, receiver }) => {
+    const rawDamage = attacker.attack;
+    const receivedDamage =
+      rawDamage - (attacker.level - receiver.level) * 1.25;
+
+    const finalDamage = receivedDamage - receiver.defense / 2;
+
+    return finalDamage;
+  };
 
   // Input: receiver
-  // Output: new receiver
+  // Output: health recovered
   const heal = ({ receiver }) => {};
 
   return (
@@ -27,11 +59,11 @@ export const App = () => {
       <div className={styles.opponent}>
         <div className={styles.summary}>
           <PlayerSummary
-            level={44}
-            health={12}
             main={false}
-            name={'Evil Person'}
-            maxHealth={maxHealth}
+            health={opponentHealth}
+            name={opponent.name}
+            level={opponent.level}
+            maxHealth={opponent.maxHealth}
           />
         </div>
       </div>
@@ -39,8 +71,8 @@ export const App = () => {
       <div className={styles.characters}>
         <div className={styles.gameHeader}>Mega Man vs Samus</div>
         <div className={styles.gameImages}>
-          <img alt="megaman" src="/assets/megaman.png" />
-          <img alt="samus" src="/assets/samus.png" />
+          <img alt={player.name} src={player.img} />
+          <img alt={opponent.name} src={opponent.img} />
         </div>
       </div>
 
@@ -48,19 +80,47 @@ export const App = () => {
         <div className={styles.summary}>
           <PlayerSummary
             main={true}
-            health={98}
-            name={name}
-            level={level}
-            maxHealth={maxHealth}
+            health={health}
+            name={player.name}
+            level={player.level}
+            maxHealth={player.maxHealth}
           />
         </div>
 
         <div className={styles.hud}>
           <div className={styles.hudChild}>
-            <BattleAnnouncer message={'What will Zaberu do?'} />
+            <BattleAnnouncer message={announcerMessage} />
           </div>
           <div className={styles.hudChild}>
-            <BattleMenu />
+            <BattleMenu
+              onAttack={() => {
+                if (turn === 0) {
+                  const damageDealt = attack({
+                    attacker: player,
+                    receiver: opponent,
+                  });
+
+                  const remainingHealth = opponentHealth - damageDealt;
+
+                  /*
+                    setTurn(-1);
+
+                    animateAttack().then(() => {
+                      setOpponentHealth(
+                        remainingHealth > 0 ? remainingHealth : 0,
+                      );
+
+                      setTurn(1);
+                    });
+                  */
+
+                  // We don't want a negative HP.
+                  setOpponentHealth(
+                    remainingHealth > 0 ? remainingHealth : 0,
+                  );
+                }
+              }}
+            />
           </div>
         </div>
       </div>

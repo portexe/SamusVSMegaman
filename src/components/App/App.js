@@ -1,58 +1,43 @@
-import { useState } from 'react';
 import styles from './styles.module.css';
+import { useEffect, useState } from 'react';
+import { wait, heal, magic, attack, player, opponent } from 'shared';
 import { BattleMenu, PlayerSummary, BattleAnnouncer } from 'components';
 
 export const App = () => {
-  const player = {
-    level: 44,
-    maxHealth: 177,
-    name: 'Mega Man',
-    img: '/assets/megaman.png',
-
-    magic: 32,
-    attack: 44,
-    defense: 48,
-    magicDefense: 37,
-  };
-  const opponent = {
-    level: 42,
-    name: 'Samus',
-    maxHealth: 188,
-    img: '/assets/samus.png',
-
-    magic: 55,
-    attack: 48,
-    defense: 22,
-    magicDefense: 30,
-  };
-
-  const [health, setHealth] = useState(player.maxHealth);
+  const [health] = useState(player.maxHealth);
   const [opponentHealth, setOpponentHealth] = useState(opponent.maxHealth);
 
   // 0 -> Player's turn
   // 1 -> Opponent's turn
-  // -1 -> Animating
+  // -1 -> Animating (AKA disable le buttons)
   const [turn, setTurn] = useState(0);
 
   const [announcerMessage, setAnnouncerMessage] = useState(
-    'What will Mega Man do?',
+    `What will ${player.name} do?`,
   );
 
-  // Input: attacker and the receiver
-  // Output: damage dealt
-  const attack = ({ attacker, receiver }) => {
-    const rawDamage = attacker.attack;
-    const receivedDamage =
-      rawDamage - (attacker.level - receiver.level) * 1.25;
+  const [playerSpriteClass, setPlayerSpriteClass] = useState(
+    styles.sprite,
+  );
+  const [opponentSpriteClass, setOpponentSpriteClass] = useState(
+    styles.sprite,
+  );
 
-    const finalDamage = receivedDamage - receiver.defense / 2;
+  // Triggered when it becomes the opponent's turn
+  useEffect(() => {
+    if (turn === 1) {
+      /**
+        1. Randomly choose between attack, heal, or magic
+        2. Calculate the amount of damage or recovery
+        3. Begin the sequence
+        4. Switch to player's turn
+      */
 
-    return finalDamage;
-  };
-
-  // Input: receiver
-  // Output: health recovered
-  const heal = ({ receiver }) => {};
+      const options = ['attack', 'heal', 'magic'];
+      const chosenOption =
+        options[Math.floor(Math.random() * options.length)];
+    }
+  }, [turn]);
 
   return (
     <div className={styles.main}>
@@ -71,8 +56,16 @@ export const App = () => {
       <div className={styles.characters}>
         <div className={styles.gameHeader}>Mega Man vs Samus</div>
         <div className={styles.gameImages}>
-          <img alt={player.name} src={player.img} />
-          <img alt={opponent.name} src={opponent.img} />
+          <img
+            alt={player.name}
+            src={player.img}
+            className={playerSpriteClass}
+          />
+          <img
+            alt={opponent.name}
+            src={opponent.img}
+            className={opponentSpriteClass}
+          />
         </div>
       </div>
 
@@ -91,37 +84,97 @@ export const App = () => {
           <div className={styles.hudChild}>
             <BattleAnnouncer message={announcerMessage} />
           </div>
-          <div className={styles.hudChild}>
-            <BattleMenu
-              onAttack={() => {
-                if (turn === 0) {
-                  const damageDealt = attack({
+          {turn === 0 && (
+            <div className={styles.hudChild}>
+              <BattleMenu
+                onMagic={async () => {
+                  setTurn(-1);
+                  setAnnouncerMessage(`${player.name} has cast a spell!`);
+
+                  await wait(1000);
+
+                  setPlayerSpriteClass(styles.doingMagic);
+
+                  await wait(1000);
+
+                  setPlayerSpriteClass(styles.sprite);
+
+                  await wait(500);
+
+                  setOpponentSpriteClass(styles.damage);
+
+                  await wait(750);
+
+                  setOpponentSpriteClass(styles.sprite);
+                  setAnnouncerMessage(
+                    `${opponent.name} doesn't know what hit her!`,
+                  );
+
+                  const damageDealt = magic({
                     attacker: player,
                     receiver: opponent,
                   });
-
                   const remainingHealth = opponentHealth - damageDealt;
-
-                  /*
-                    setTurn(-1);
-
-                    animateAttack().then(() => {
-                      setOpponentHealth(
-                        remainingHealth > 0 ? remainingHealth : 0,
-                      );
-
-                      setTurn(1);
-                    });
-                  */
-
                   // We don't want a negative HP.
                   setOpponentHealth(
                     remainingHealth > 0 ? remainingHealth : 0,
                   );
-                }
-              }}
-            />
-          </div>
+
+                  await wait(2500);
+
+                  setAnnouncerMessage(`Now it's ${opponent.name}'s turn!`);
+                  setTurn(1);
+                }}
+                onAttack={async () => {
+                  setTurn(-1);
+                  /*
+                    1. Update message
+                    2. Animate attacker
+                    3. Animate receiver
+                    4. Update health
+                    5. Update message
+                    6. Update player turn
+                  */
+
+                  setAnnouncerMessage(
+                    `${player.name} has chosen to attack!`,
+                  );
+
+                  await wait(1000);
+
+                  setPlayerSpriteClass(styles.playerAttacking);
+
+                  await wait(100);
+
+                  setPlayerSpriteClass(styles.sprite);
+
+                  await wait(500);
+
+                  setOpponentSpriteClass(styles.damage);
+
+                  await wait(750);
+
+                  setOpponentSpriteClass(styles.sprite);
+                  setAnnouncerMessage(`${opponent.name} felt that!`);
+
+                  const damageDealt = attack({
+                    attacker: player,
+                    receiver: opponent,
+                  });
+                  const remainingHealth = opponentHealth - damageDealt;
+                  // We don't want a negative HP.
+                  setOpponentHealth(
+                    remainingHealth > 0 ? remainingHealth : 0,
+                  );
+
+                  await wait(2000);
+
+                  setAnnouncerMessage(`Now it's ${opponent.name}'s turn!`);
+                  setTurn(1);
+                }}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

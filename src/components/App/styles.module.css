@@ -79,6 +79,7 @@
 }
 .opponentAttacking {
   transition: 0.1s;
+  transform: translateX(-100px);
 }
 
 .doingMagic {

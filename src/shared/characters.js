@@ -1,4 +1,4 @@
-export const player = {
+export const playerStats = {
   level: 44,
   maxHealth: 177,
   name: 'Mega Man',
@@ -9,7 +9,7 @@ export const player = {
   defense: 48,
   magicDefense: 37,
 };
-export const opponent = {
+export const opponentStats = {
   level: 42,
   name: 'Samus',
   maxHealth: 188,

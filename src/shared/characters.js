@@ -5,18 +5,18 @@ export const playerStats = {
   img: '/assets/megaman.png',
 
   magic: 32,
-  attack: 44,
-  defense: 48,
-  magicDefense: 37,
+  attack: 50,
+  defense: 30,
+  magicDefense: 30,
 };
 export const opponentStats = {
-  level: 42,
+  level: 44,
   name: 'Samus',
   maxHealth: 188,
   img: '/assets/samus.png',
 
-  magic: 55,
-  attack: 48,
-  defense: 22,
-  magicDefense: 30,
+  magic: 50,
+  attack: 32,
+  defense: 20,
+  magicDefense: 48,
 };

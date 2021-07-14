@@ -1,5 +1,12 @@
+import {
+  heal,
+  wait,
+  magic,
+  attack,
+  playerStats,
+  opponentStats,
+} from 'shared';
 import { useEffect, useState } from 'react';
-import { wait, attack, playerStats, opponentStats, magic } from 'shared';
 
 export const useBattleSequence = sequence => {
   // 0 -> Player's turn
@@ -66,7 +73,9 @@ export const useBattleSequence = sequence => {
 
             await wait(2000);
 
-            setAnnouncerMessage(`What will ${receiver.name} do?`);
+            setAnnouncerMessage(`Now it's ${receiver.name} turn!`);
+
+            await wait(1500);
 
             setTurn(turn === 0 ? 1 : 0);
             setInSequence(false);
@@ -119,6 +128,58 @@ export const useBattleSequence = sequence => {
             await wait(2500);
 
             setAnnouncerMessage(`Now it's ${receiver.name}'s turn!`);
+
+            await wait(1500);
+
+            setTurn(turn === 0 ? 1 : 0);
+            setInSequence(false);
+          })();
+
+          break;
+        }
+
+        case 'heal': {
+          const recovered = heal({ receiver: attacker });
+
+          (async () => {
+            setInSequence(true);
+
+            setAnnouncerMessage(`${attacker.name} has chosen to heal!`);
+
+            await wait(1000);
+
+            turn === 0
+              ? setPlayerAnimation('magic')
+              : setOpponentAnimation('magic');
+
+            await wait(1000);
+
+            turn === 0
+              ? setPlayerAnimation('static')
+              : setOpponentAnimation('static');
+
+            await wait(500);
+
+            setAnnouncerMessage(`${attacker.name} has recovered health.`);
+
+            // We don't want to set HP more than the max
+            turn === 0
+              ? setPlayerHealth(h =>
+                  h + recovered <= attacker.maxHealth
+                    ? h + recovered
+                    : attacker.maxHealth,
+                )
+              : setOpponentHealth(h =>
+                  h + recovered <= attacker.maxHealth
+                    ? h + recovered
+                    : attacker.maxHealth,
+                );
+
+            await wait(2500);
+
+            setAnnouncerMessage(`Now it's ${receiver.name}'s turn!`);
+
+            await wait(1500);
 
             setTurn(turn === 0 ? 1 : 0);
             setInSequence(false);

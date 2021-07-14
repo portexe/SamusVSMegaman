@@ -1,6 +1,6 @@
 import styles from './styles.module.css';
 
-export const BattleMenu = ({ onAttack, onMagic, onHeal, onItem }) => (
+export const BattleMenu = ({ onAttack, onMagic, onHeal }) => (
   <div className={styles.main}>
     <div onClick={onAttack} className={styles.option}>
       Attack
@@ -8,7 +8,8 @@ export const BattleMenu = ({ onAttack, onMagic, onHeal, onItem }) => (
     <div onClick={onMagic} className={styles.option}>
       Magic
     </div>
-    <div className={styles.option}>Heal</div>
-    <div className={styles.option}>Item</div>
+    <div onClick={onHeal} className={styles.option}>
+      Heal
+    </div>
   </div>
 );

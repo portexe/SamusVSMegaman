@@ -10,6 +10,10 @@
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
 }
+.main > :first-child {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
 .option {
   display: flex;
   border-radius: 5px;

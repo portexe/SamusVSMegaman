@@ -22,5 +22,5 @@ export const magic = ({ attacker, receiver }) => {
   return finalDamage;
 };
 export const heal = ({ receiver }) => {
-  return 0;
+  return receiver.magic + receiver.level * 0.25;
 };

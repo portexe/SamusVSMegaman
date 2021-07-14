@@ -9,10 +9,7 @@ import { opponentStats, playerStats } from 'shared';
 import { BattleMenu, PlayerSummary, BattleAnnouncer } from 'components';
 
 export const App = () => {
-  const [sequence, setSequence] = useState({
-    mode: null,
-    turn: null,
-  });
+  const [sequence, setSequence] = useState({});
 
   const {
     turn,
@@ -32,11 +29,14 @@ export const App = () => {
 
   const aiChoice = useAIOpponent(turn);
 
+  // This is running twice in most circumstances. For example:
+  // 1: Turn updates -> effect runs
+  // 2: Turn updates causing aiChoice to update -> effect runs
   useEffect(() => {
-    if (aiChoice && turn === 1) {
+    if (aiChoice && turn === 1 && !inSequence) {
       setSequence({ turn, mode: aiChoice });
     }
-  }, [turn, aiChoice]);
+  }, [turn, aiChoice, inSequence]);
 
   return (
     <div className={styles.main}>

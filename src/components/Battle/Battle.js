@@ -29,9 +29,6 @@ export const Battle = ({ onGameEnd }) => {
 
   const aiChoice = useAIOpponent(turn);
 
-  // This is running twice in most circumstances. For example:
-  // 1: Turn updates -> effect runs
-  // 2: Turn updates causing aiChoice to update -> effect runs
   useEffect(() => {
     if (aiChoice && turn === 1 && !inSequence) {
       setSequence({ turn, mode: aiChoice });

@@ -50,22 +50,22 @@
   min-height: 150px;
 }
 
-.sprite {
+.static {
   transform: translateX(0px);
   transform: translateY(0px);
   transition: 0.5s;
 }
 
-.playerAttacking {
+.playerSprite .attack {
   transition: 0.1s;
   transform: translateX(100px);
 }
-.opponentAttacking {
+.opponentSprite .attack {
   transition: 0.1s;
   transform: translateX(-100px);
 }
 
-.doingMagic {
+.magic {
   transition: 0.2s;
   transform: translateY(-25px);
   animation: shake 0.5s infinite;

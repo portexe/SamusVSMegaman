@@ -21,12 +21,6 @@ export const Battle = ({ onGameEnd }) => {
     announcerMessage,
   } = useBattleSequence(sequence);
 
-  const { playerSpriteClass, opponentSpriteClass } = useSpriteAnimation({
-    styles,
-    playerAnimation,
-    opponentAnimation,
-  });
-
   const aiChoice = useAIOpponent(turn);
 
   useEffect(() => {
@@ -63,16 +57,20 @@ export const Battle = ({ onGameEnd }) => {
           {playerStats.name} vs {opponentStats.name}
         </div>
         <div className={styles.gameImages}>
-          <img
-            alt={playerStats.name}
-            src={playerStats.img}
-            className={playerSpriteClass}
-          />
-          <img
-            alt={opponentStats.name}
-            src={opponentStats.img}
-            className={opponentSpriteClass}
-          />
+          <div className={styles.playerSprite}>
+            <img
+              alt={playerStats.name}
+              src={playerStats.img}
+              className={styles[playerAnimation || 'sprite']}
+            />
+          </div>
+          <div className={styles.opponentSprite}>
+            <img
+              alt={opponentStats.name}
+              src={opponentStats.img}
+              className={styles[opponentAnimation]}
+            />
+          </div>
         </div>
       </div>
 

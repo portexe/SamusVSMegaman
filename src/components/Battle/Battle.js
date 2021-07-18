@@ -1,10 +1,6 @@
-import {
-  useAIOpponent,
-  useBattleSequence,
-  useSpriteAnimation,
-} from 'hooks';
 import styles from './styles.module.css';
 import { useEffect, useState } from 'react';
+import { useAIOpponent, useBattleSequence } from 'hooks';
 import { opponentStats, playerStats, wait } from 'shared';
 import { BattleMenu, PlayerSummary, BattleAnnouncer } from 'components';
 
@@ -61,7 +57,7 @@ export const Battle = ({ onGameEnd }) => {
             <img
               alt={playerStats.name}
               src={playerStats.img}
-              className={styles[playerAnimation || 'sprite']}
+              className={styles[playerAnimation]}
             />
           </div>
           <div className={styles.opponentSprite}>
